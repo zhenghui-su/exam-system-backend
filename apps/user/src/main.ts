@@ -12,7 +12,7 @@ async function bootstrap() {
     },
   });
   await app.startAllMicroservices();
-
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await app.listen(process.env.port ?? 3001);
