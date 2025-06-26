@@ -78,4 +78,9 @@ export class ExamService {
       },
     });
   }
+  async find(id: number) {
+    return this.prismaService.exam.findUnique({
+      where: { id },
+    });
+  }
 }

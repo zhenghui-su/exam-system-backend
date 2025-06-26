@@ -49,4 +49,9 @@ export class ExamController {
   async unpublish(@UserInfo('userId') userId: number, @Param('id') id: string) {
     return this.examService.unpublish(userId, +id);
   }
+  @Get('find/:id')
+  @RequireLogin()
+  async find(@Param('id') id: string) {
+    return this.examService.find(+id);
+  }
 }
