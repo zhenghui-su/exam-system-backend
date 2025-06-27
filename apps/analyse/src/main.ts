@@ -10,7 +10,6 @@ async function bootstrap() {
       port: 8888,
     },
   });
-  await app.startAllMicroservices();
   app.enableCors();
   await app.listen(process.env.port ?? 3004);
 }
