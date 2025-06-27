@@ -10,10 +10,36 @@ export class AnswerService {
     return 'Hello World!';
   }
   async add(dto: AnswerAddDto, userId: number) {
+    const exam = await this.prismaService.exam.findUnique({
+      where: { id: dto.examId },
+    });
+
+    let questions: any[] = [];
+    try {
+      //@ts-ignore
+      questions = JSON.parse(exam.content);
+    } catch (e) {}
+    let answers: any[] = [];
+    try {
+      answers = JSON.parse(dto.content);
+    } catch (e) {}
+    let totalScore = 0;
+    answers.forEach((answer) => {
+      const question = questions.find((item) => item.id === answer.id);
+      if (question.type === 'input') {
+        if (answer.answer.includes(question.answer)) {
+          totalScore += question.score;
+        }
+      } else {
+        if (answer.answer === question.answer) {
+          totalScore += question.score;
+        }
+      }
+    });
     return this.prismaService.answer.create({
       data: {
         content: dto.content,
-        score: 0,
+        score: totalScore,
         answerer: {
           connect: { id: userId },
         },
